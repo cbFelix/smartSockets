@@ -20,6 +20,8 @@ public:
     // set methods
 
     void setPort(unsigned short int newPort);
+    void setPort(const Port& other);
+
     void setRandPort(unsigned short int min, unsigned short int max);
     void setRandPort();
 
@@ -29,7 +31,7 @@ protected:
 private:
     unsigned short _port;
 
-    static vector<Port> UsedPorts;
+    static vector<unsigned short int> UsedPorts;
 };
 
 #endif  //  PORT_H

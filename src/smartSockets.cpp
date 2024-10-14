@@ -7,6 +7,40 @@
 #include <arpa/inet.h>
 #include <sys/socket.h>
 
+// get
+
+BaseSocket::BaseSocket(const string& ip, 
+            unsigned short int port, 
+            SocketType socketType, 
+            IPAddress::AddressFamily protocol,
+            unsigned int socketTimeout, // default value for timeout
+            int bufferSize)
+    : _ipAddress(ip, protocol),      // init IPAddress
+        _socketPort(port),             // init Port
+        _socketType(socketType),       // init SocketType
+        _socketTimeout(socketTimeout), // init timeout
+        _buffer_size(bufferSize),      // init buffer size
+        _isConnected(false)      // init state of connection
+{
+    _hostName = "defaultHostName";
+}
+
+BaseSocket::BaseSocket(IPAddress ip, 
+            Port port, 
+            SocketType socketType, 
+            IPAddress::AddressFamily protocol,
+            unsigned int socketTimeout, // default value for timeout
+            int bufferSize)    // default value for buffer)
+    : _ipAddress(ip),                // init IPAddress
+        _socketPort(port),             // init Port
+        _socketType(socketType),       // init SocketType
+        _socketTimeout(socketTimeout), // init timeout
+        _buffer_size(bufferSize),      // init buffer size
+        _isConnected(false)            // init state of connection
+{
+    _hostName = ip.toString();
+}
+
 string BaseSocket::getIpAddress() {
         return _ipAddress.toString();
     }
@@ -49,3 +83,26 @@ bool BaseSocket::isConnected() const {
 string BaseSocket::getHostName() const {
     return _hostName;
 }
+
+// set
+
+void BaseSocket::setIPAddress(IPAddress& newAddress) {
+    _ipAddress.setIP(newAddress);
+}
+void BaseSocket::setIPAddress(const string& newIp, IPAddress::AddressFamily addressFamily) {
+    _ipAddress.setIP(newIp, addressFamily);
+}
+
+void BaseSocket::setPort(Port newPort) {
+    _socketPort.setPort(newPort);
+}
+void BaseSocket::setPort(unsigned short int newPort) {
+
+}
+
+void BaseSocket::setHostName(string newHostName) {
+    _hostName = newHostName;
+}
+
+
+

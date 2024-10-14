@@ -10,19 +10,20 @@ class BaseSocket {
 public:
     enum class SocketType {Raw, UDP, TCP};
 
-    BaseSocket(const string& ip, unsigned short int port, 
+    BaseSocket(const string& ip, 
+               unsigned short int port, 
                SocketType socketType = SocketType::TCP, 
                IPAddress::AddressFamily protocol = IPAddress::AddressFamily::IPv4,
                unsigned int socketTimeout = 3000, // default value for timeout
-               int bufferSize = 1024,    // default value for buffer
-               bool isConnected = false)
-        : _ipAddress(ip, protocol),      // init IPAddress
-          _socketPort(port),             // init Port
-          _socketType(socketType),       // init SocketType
-          _socketTimeout(socketTimeout), // init timeout
-          _buffer_size(bufferSize),      // init buffer size
-          _isConnected(isConnected)      // init state of connection
-    {}
+               int bufferSize = 1024);
+
+    BaseSocket(IPAddress ip, 
+               Port port, 
+               SocketType socketType = SocketType::TCP, 
+               IPAddress::AddressFamily protocol = IPAddress::AddressFamily::IPv4,
+               unsigned int socketTimeout = 3000, // default value for timeout
+               int bufferSize = 1024); 
+
 
     //  get methods
 
@@ -50,6 +51,7 @@ public:
     void setPort(Port newPort);
     void setPort(unsigned short int newPort);
 
+    void setHostName(string newHostName);
 
 protected:  
     string _hostName;
@@ -61,6 +63,29 @@ private:
     unsigned int _socketTimeout;
     unsigned int _buffer_size;
     bool _isConnected;
+};
+
+class BaseConnection {
+public:
+    int connect();
+    int disconnect();
+
+    int bind();
+    int unbind();
+    
+    int accept();
+    int close();
+
+    int sendData();
+    int reciveData();
+
+    int listen();
+
+protected:
+    
+
+private: 
+
 };
 
 

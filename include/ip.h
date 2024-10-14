@@ -14,7 +14,8 @@ public:
 
     string toString();
 
-    void setIP(string& newIp, AddressFamily addressFamily);
+    void setIP(const string& newIp, AddressFamily addressFamily);
+    void setIP(IPAddress& other);
 
     int getFamliy();
 

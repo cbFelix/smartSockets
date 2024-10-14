@@ -30,7 +30,7 @@ string IPAddress::toString() {
     return _ip;
 }
 
-void IPAddress::setIP(string& newIp, AddressFamily addressFamily) {
+void IPAddress::setIP(const string& newIp, AddressFamily addressFamily) {
     if(addressFamily == AddressFamily::IPv4) {
         if(!isValidIPv4(newIp)) {
             throw invalid_argument("Invalid IPv4 address");
@@ -47,6 +47,25 @@ void IPAddress::setIP(string& newIp, AddressFamily addressFamily) {
         throw invalid_argument("Invalid address family");
     }
     _ip = newIp;
+}
+void IPAddress::setIP(IPAddress& other) {
+    if(other._family == IPAddress::AddressFamily::IPv4) {
+        if(!isValidIPv4(other._ip)) {
+            throw(invalid_argument("Failed to change IP address: invalid IP address"));
+            return;
+        }
+        _family = other._family;
+    }
+    else if (other._family == AddressFamily::IPv6) {
+        if(!isValidIPv6(other._ip)) {
+            throw invalid_argument("Invalid IPv6 address");
+        }
+        _family = other._family;
+    }
+    else {
+        throw invalid_argument("Invalid address family");
+    }
+    _ip = other._ip;
 }
 
 bool IPAddress::isValidIPv4(const string ip) {
@@ -67,7 +86,6 @@ bool IPAddress::isValidIPv4(const string ip) {
     if (!isValidIPv4Segment(segment)) return false;
     return numDots == 3;
 }
-
 bool IPAddress::isValidIPv6(const string& ip) {
     if (ip.empty()) return false;
     
@@ -113,14 +131,12 @@ bool IPAddress::isValidIPv6(const string& ip) {
 
     return true;
 }
-
 bool IPAddress::isValidIPv4Segment(const string segment) {
     if (segment.empty() || segment.length() > 3) return false;
     if (segment.length() > 1 && segment[0] == '0') return false;
     int value = stoi(segment);
     return value >= 0 && value <= 255;
 }
-
 bool IPAddress::isValidIPv6Segment(const string& segment) {
     if (segment.empty() || segment.length() > 4) {
         return false;
@@ -150,7 +166,6 @@ int IPAddress::getFamliy() {
 bool IPAddress::isIPv4() const{
     return _family == AddressFamily::IPv4;
 }
-
 bool IPAddress::isIPv6() const {
     return _family == AddressFamily::IPv6;
 }
@@ -158,18 +173,15 @@ bool IPAddress::isIPv6() const {
 bool IPAddress::operator==(const IPAddress& other) const {
     return this->_ip == other._ip && this->_family == other._family;
 }
-
 bool IPAddress::operator!=(const IPAddress& other) const {
     return !(*this == other);
 }
-
 bool IPAddress::operator<(const IPAddress& other) const {
     if (this->_family != other._family) {
         return this->_family < other._family; 
     }
     return this->_ip < other._ip; 
 }
-
 bool IPAddress::operator>(const IPAddress& other) const {
     return other < *this;
 }
@@ -182,7 +194,6 @@ bool IPAddress::isLoopback() const {
     }
     return false;
 }
-
 bool IPAddress::isPrivate() const {
     if (_family == AddressFamily::IPv4) {
         return _ip.find("10.") == 0 ||  // 10.0.0.0/8
@@ -194,7 +205,6 @@ bool IPAddress::isPrivate() const {
     }
     return false;
 }
-
 bool IPAddress::isLinkLocal() const {
     if (_family == AddressFamily::IPv4) {
         return _ip.find("169.254.") == 0;
