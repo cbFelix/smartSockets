@@ -151,7 +151,7 @@ bool IPAddress::isValidIPv6Segment(const string& segment) {
     return true;
 }
 
-int IPAddress::getFamliy() {
+int IPAddress::getFamliyVersion() const {
     if(_family == AddressFamily::IPv4) {
         return 4;
     }
@@ -161,6 +161,9 @@ int IPAddress::getFamliy() {
     else {
         throw(runtime_error("Unknown protocol family"));
     }
+}
+IPAddress::AddressFamily IPAddress::getFamily() const {
+    return _family;
 }
 
 bool IPAddress::isIPv4() const{

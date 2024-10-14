@@ -20,7 +20,6 @@ public:
     BaseSocket(IPAddress ip, 
                Port port, 
                SocketType socketType = SocketType::TCP, 
-               IPAddress::AddressFamily protocol = IPAddress::AddressFamily::IPv4,
                unsigned int socketTimeout = 3000, // default value for timeout
                int bufferSize = 1024); 
 
@@ -58,15 +57,21 @@ protected:
 
 private:
     IPAddress _ipAddress;
+    IPAddress::AddressFamily _protocol;
+
     Port _socketPort;
     SocketType _socketType;
     unsigned int _socketTimeout;
     unsigned int _buffer_size;
     bool _isConnected;
+
+    BaseConnection _connection;
 };
 
 class BaseConnection {
 public:
+    BaseConnection(BaseSocket& socket) : _socket(socket) {}
+
     int connect();
     int disconnect();
 
@@ -82,10 +87,10 @@ public:
     int listen();
 
 protected:
-    
+    BaseSocket& _socket;
 
 private: 
-
+    
 };
 
 

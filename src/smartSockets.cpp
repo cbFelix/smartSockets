@@ -18,9 +18,10 @@ BaseSocket::BaseSocket(const string& ip,
     : _ipAddress(ip, protocol),      // init IPAddress
         _socketPort(port),             // init Port
         _socketType(socketType),       // init SocketType
+        _protocol(protocol),           // init protocol
         _socketTimeout(socketTimeout), // init timeout
         _buffer_size(bufferSize),      // init buffer size
-        _isConnected(false)      // init state of connection
+        _isConnected(false)      // Connection init state, why false? But connection can't be connected immediately after init
 {
     _hostName = "defaultHostName";
 }
@@ -28,12 +29,12 @@ BaseSocket::BaseSocket(const string& ip,
 BaseSocket::BaseSocket(IPAddress ip, 
             Port port, 
             SocketType socketType, 
-            IPAddress::AddressFamily protocol,
             unsigned int socketTimeout, // default value for timeout
             int bufferSize)    // default value for buffer)
     : _ipAddress(ip),                // init IPAddress
         _socketPort(port),             // init Port
         _socketType(socketType),       // init SocketType
+        _protocol(ip.getFamily()),           // init protocol
         _socketTimeout(socketTimeout), // init timeout
         _buffer_size(bufferSize),      // init buffer size
         _isConnected(false)            // init state of connection

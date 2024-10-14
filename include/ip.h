@@ -17,7 +17,8 @@ public:
     void setIP(const string& newIp, AddressFamily addressFamily);
     void setIP(IPAddress& other);
 
-    int getFamliy();
+    int getFamliyVersion() const;
+    AddressFamily getFamily() const;
 
     bool isIPv4() const;
     bool isIPv6() const;
