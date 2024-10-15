@@ -1,6 +1,12 @@
 #include "smartSockets.h"
 
 #include <iostream>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <unistd.h>
+#include <cstring>
+#include <errno.h>
 
 //  Work with sockets
 
@@ -21,10 +27,9 @@ BaseSocket::BaseSocket(const string& ip,
         _protocol(protocol),           // init protocol
         _socketTimeout(socketTimeout), // init timeout
         _buffer_size(bufferSize),      // init buffer size
-        _isConnected(false)      // Connection init state, why false? But connection can't be connected immediately after init
-{
-    _hostName = "defaultHostName";
-}
+        _isConnected(false),       // Connection init state, why false? But connection can't be connected immediately after init
+        _isPortBinded(false) {}
+
 
 BaseSocket::BaseSocket(IPAddress ip, 
             Port port, 
@@ -37,7 +42,8 @@ BaseSocket::BaseSocket(IPAddress ip,
         _protocol(ip.getFamily()),           // init protocol
         _socketTimeout(socketTimeout), // init timeout
         _buffer_size(bufferSize),      // init buffer size
-        _isConnected(false)            // init state of connection
+        _isConnected(false),            // init state of connection
+        _isPortBinded(false)
 {
     _hostName = ip.toString();
 }
@@ -85,6 +91,10 @@ string BaseSocket::getHostName() const {
     return _hostName;
 }
 
+IPAddress::AddressFamily BaseSocket::getProtocol() const {
+    return _protocol;
+}
+
 // set
 
 void BaseSocket::setIPAddress(IPAddress& newAddress) {
@@ -105,5 +115,40 @@ void BaseSocket::setHostName(string newHostName) {
     _hostName = newHostName;
 }
 
+BaseConnection BaseSocket::initConnection() {
+    return BaseConnection(*this);
+}
 
+//  BaseConnectionClass
 
+int BaseConnection::connect() {
+
+}
+int BaseConnection::disconnect() {
+    
+}
+
+int BaseConnection::bind(unsigned short int port) {
+
+}
+int BaseConnection::unbind() {
+    
+}
+
+int BaseConnection::accept() {
+    
+}
+int BaseConnection::close() {
+    
+}
+
+int BaseConnection::sendData() {
+    
+}
+int BaseConnection::reciveData() {
+    
+}
+
+int BaseConnection::listen() {
+
+}
